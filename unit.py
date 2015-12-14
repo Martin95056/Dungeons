@@ -1,3 +1,6 @@
+from spell import Spell
+
+
 class Unit:
 	def __init__(self, health, mana):
 		self.health = health
@@ -10,7 +13,13 @@ class Unit:
 		return self.curr_health > 0
 
 	def can_cast(self):
-		return self.curr_mana > 0 #check the mana cost of the spell, after making the class
+		try:
+			self.curr_mana > spell.mana_cost
+			return True
+		
+		except:
+			print("NOT ENOUGH MANA!!!")
+
 
 	def get_health(self):
 		return self.curr_health
@@ -27,7 +36,7 @@ class Unit:
 			return self.curr_health
 
 	def take_healing(healing_points):
-		if is_alive == True:
+		if self.is_alive() == True:
 			if (selh.curr_health + healing_points) <= self.health:
 				self.curr_health += healing_points
 				return True
