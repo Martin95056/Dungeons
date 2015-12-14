@@ -11,6 +11,8 @@ class Hero(Unit):
 		self.title = title
 		self.mana_regen = mana_regen
 
+		self.phisical_damage = 0
+		self.magic_damage = 0
 		self.damage = 0
 
 		self.max_equiped_weapons = 0
@@ -26,16 +28,51 @@ class Hero(Unit):
 		return self.max_learned_spells == 0
 
 	def equip(self, weapon):
-		if self.can_equip():
-			self.damage = weapon.damage
+		try:
+			self.can_equip()
+
+			self.phisical_damage = weapon.damage
 			self.max_equiped_weapons = 1
 
-		else:
+		except:
 			print("{} cannot carry anymore weapons.".format(self.known_as())
 
-	def can_cast(self):
-		super(Unit, self).can_cast()
+	def learn(self, spell):
+		try:
+			self.can_learn_spell()
 
+			self.magic_damage = spell.damage
+			self.max_learned_spells = 1
 
+		except:
+			print("{} cannot learn anymore magics.".format(self.known_as())
 
+	def can_attack(self):
+		if self.max_equiped_weapons == 0 and self.max_learned_spells ==0:
+			return True
 
+		else:
+			return False
+
+	def attack(self, **kwargs):
+		for key in kwargs:
+
+			try:
+				key == 'by' and kwargs[key] == 'weapon'
+				if self.can_attack() == True and self.phisical_damage != 0:
+					self.damage = self.phisical_damage
+
+				else:
+					self.damage = 0
+
+			elif key == 'by' and kwargs[key] == 'magic':
+				if self.can_attack() == True and self.magic_damage != 0:
+					self.damage = self.magic_damage
+
+				else:
+					self.damage = 0
+
+				return self.damage
+
+			except:
+				raise Exception('for key use {} and for keyworld use {} or {}, please.'.format('by', 'weapon', 'magic'))
