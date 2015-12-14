@@ -37,6 +37,7 @@ class Hero(Unit):
 		except:
 			print("{} cannot carry anymore weapons.".format(self.known_as())
 
+<<<<<<< HEAD
 	def take_mana(self, mana_points):
 		if map.move_hero():
 			if (self.get_mana() + self.mana_regen) < self.mana:
@@ -48,6 +49,8 @@ class Hero(Unit):
 
 		return self.get_mana()
 
+=======
+>>>>>>> units
 	def learn(self, spell):
 		try:
 			self.can_learn_spell()
