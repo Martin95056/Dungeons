@@ -15,6 +15,8 @@ class Unit:
 	def can_cast(self):
 		try:
 			self.curr_mana > spell.mana_cost
+						
+			self.curr_mana -= spell.mana_cost
 			return True
 		
 		except:
