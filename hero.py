@@ -3,15 +3,15 @@ from spell import Spell
 
 
 class Hero():
-	def __init__(self, name, title, health, mana,  mana_regen):
+	def __init__(self, name, title, health, mana, mana_regen):
 		self.name = name
 		self.title = title
 		self.health = health
 		self.mana = mana
 		self.mana_regen = mana_regen
 
-		self.curr_health = 0
-		self.curr_mana = 0
+		self.curr_health = health
+		self.curr_mana = mana
 
 		self.phisical_damage = 0
 		self.magic_damage = 0
@@ -23,10 +23,16 @@ class Hero():
 	def known_as(self):
 		return "{} the {}".format(self.name, self.title)
 
+	def get_health(self):
+		return self.curr_health
+
+	def get_mana(self):
+		return self.curr_mana
+	
 	def is_alive(self):
 		return self.curr_health > 0
 
-	def can_cast(self):
+	def can_cast(self, spell):
 		try:
 			self.curr_mana > spell.mana_cost
 						
@@ -34,13 +40,7 @@ class Hero():
 			return True
 		
 		except:
-			print("NOT ENOUGH MANA!!!")
-
-	def get_health(self):
-		return self.curr_health
-
-	def get_mana(self):
-		return self.curr_mana
+			raise Exception("NOT ENOUGH MANA!!!")
 
 	def take_damage(self, damage_points):
 		if damage_points >= self.curr_health:
@@ -50,9 +50,9 @@ class Hero():
 			self.curr_health -= damage_points
 		return self.curr_health
 
-	def take_healing(healing_points):
+	def take_healing(self, healing_points):
 		if self.is_alive() == True:
-			if (selh.curr_health + healing_points) <= self.health:
+			if (self.curr_health + healing_points) <= self.health:
 				self.curr_health += healing_points
 				return True
 
@@ -75,7 +75,7 @@ class Hero():
 			self.max_equiped_weapons = 1
 
 		except:
-			print("{} cannot carry anymore weapons.".format(self.known_as()))
+			raise Exception("{} cannot carry anymore weapons.".format(self.known_as()))
 
 	def learn(self, spell):
 		try:
@@ -85,10 +85,10 @@ class Hero():
 			self.max_learned_spells = 1
 
 		except:
-			print("{} cannot learn anymore magics.".format(self.known_as()))
+			raise Exception("{} cannot learn anymore magics.".format(self.known_as()))
 
 	def can_attack(self):
-		if self.max_equiped_weapons == 0 and self.max_learned_spells == 0:
+		if self.max_equiped_weapons == 1 or self.max_learned_spells == 1:
 			return True
 
 		else:
