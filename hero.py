@@ -2,7 +2,7 @@ from weapon import Weapon
 from spell import Spell
 
 
-class Hero():
+class Hero(object):
 	def __init__(self, name, title, health, mana, mana_regen):
 		self.name = name
 		self.title = title
