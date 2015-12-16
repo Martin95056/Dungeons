@@ -20,10 +20,23 @@ class TestHero(unittest.TestCase):
 	def test_hero_known_as(self):
 		self.assertEqual(self.hero.known_as(), "Martin the Manqk")
 
-	def test_hero_attack(self):
-		self.hero.attack(by='MMA')
-		self.assertEqual(self.hero.damage, 0)
+	def test_hero_equip(self):
+		w = Weapon('noj', 20)
+		self.hero.equip(w)
+		self.assertEqual(self.hero.damage, self.hero.phisical_damage + w.damage)
+		self.assertEqual(self.hero.max_equiped_weapons, 1)
 
+		self.assertFalse(self.hero.equip(w))
+
+	def test_hero_learn(self):
+		s = Spell("BatkaAttack", 30, 50, 2)
+		self.hero.learn(s)
+		self.assertEqual(self.hero.magic_damage, s.damage)
+		self.assertEqual(self.hero.max_learned_spells, 1)
+
+		self.assertFalse(self.hero.learn(s))
+
+	def test_hero_attack(self):
 		w = Weapon('noj', 20)
 		self.hero.equip(w)
 		self.hero.attack(by='weapon')
@@ -38,6 +51,5 @@ class TestHero(unittest.TestCase):
 		self.hero.attack(by='RKO')
 		self.assertRaises(Exception)
 
-#testing only attack() methhod because others are similar ot the Enemy's
 if __name__ == '__main__':
     unittest.main()
