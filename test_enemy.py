@@ -47,39 +47,8 @@ class TestEnemy(unittest.TestCase):
 		self.enemy.curr_health = 0
 		self.assertFalse(self.enemy.take_healing(20))
 
-	def test_enemy_equip(self):
-		w = Weapon('noj', 20)
-		self.enemy.equip(w)
-		self.assertEqual(self.enemy.damage, self.enemy.phisical_damage + w.damage)
-		self.assertEqual(self.enemy.max_equiped_weapons, 1)
-
-		self.assertRaises(Exception)
-
-	def test_enemy_learn(self):
-		s = Spell("BatkaAttack", 30, 50, 2)
-		self.enemy.learn(s)
-		self.assertEqual(self.enemy.magic_damage, s.damage)
-		self.assertEqual(self.enemy.max_learned_spells, 1)
-
-		self.assertRaises(Exception)
-
 	def test_enemy_attack(self):
-		self.enemy.attack(by='MMA')
-		self.assertEqual(self.enemy.damage, 50)
-
-		w = Weapon('noj', 20)
-		self.enemy.equip(w)
-		self.enemy.attack(by='weapon')
-		self.assertTrue(self.enemy.can_attack())
-		self.assertEqual(self.enemy.damage, self.enemy.phisical_damage + self.enemy.damage)
-
-		s = Spell("BatkaAttack", 30, 50, 2)
-		self.enemy.learn(s)
-		self.enemy.attack(by='magic')
-		self.assertEqual(self.enemy.damage, self.enemy.magic_damage)
-
-		self.enemy.attack(by='RKO')
-		self.assertRaises(Exception)
+		self.assertEqual(self.enemy.attack(), self.enemy.damage)
 
 
 if __name__ == '__main__':
