@@ -1,0 +1,5 @@
+gold
+silver
+health
+attack_points
+
