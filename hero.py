@@ -1,19 +1,15 @@
 from unit import Unit
-from weapon import Weapon
-from spell import Spell
 
 
 class Hero(Unit):
-	def __init__(self, name, title, mana_regen, health, mana):
-		super(Unit, self).__init__(health, mana)
-
+	def __init__(self, name, title, health, mana, mana_regen):
 		self.name = name
 		self.title = title
 		self.mana_regen = mana_regen
+		super().__init__(health, mana, 0)
 
 		self.phisical_damage = 0
 		self.magic_damage = 0
-		self.damage = 0
 
 		self.max_equiped_weapons = 0
 		self.max_learned_spells = 0
@@ -28,14 +24,15 @@ class Hero(Unit):
 		return self.max_learned_spells == 0
 
 	def equip(self, weapon):
-		try:
-			self.can_equip()
+		if self.can_equip():
 
-			self.phisical_damage = weapon.damage
+			self.damage = self.phisical_damage + weapon.damage
 			self.max_equiped_weapons = 1
+			return True
 
-		except:
-			print("{} cannot carry anymore weapons.".format(self.known_as())
+		else:
+			print("{} cannot carry anymore weapons.".format(self.known_as()))
+			return False
 
 	def take_mana(self, mana_points):
 		if map.move_hero():
@@ -49,17 +46,17 @@ class Hero(Unit):
 		return self.get_mana()
 
 	def learn(self, spell):
-		try:
-			self.can_learn_spell()
+		if self.can_learn_spell():
 
 			self.magic_damage = spell.damage
 			self.max_learned_spells = 1
-
-		except:
-			print("{} cannot learn anymore magics.".format(self.known_as())
+			return Tru
+		else:
+			print("{} cannot learn anymore magics.".format(self.known_as()))
+			return False
 
 	def can_attack(self):
-		if self.max_equiped_weapons == 0 and self.max_learned_spells ==0:
+		if self.max_equiped_weapons == 1 or self.max_learned_spells == 1:
 			return True
 
 		else:
@@ -67,21 +64,20 @@ class Hero(Unit):
 
 	def attack(self, **kwargs):
 		for key in kwargs:
-
 			try:
-				key == 'by' and kwargs[key] == 'weapon'
-				if self.can_attack() == True and self.phisical_damage != 0:
-					self.damage = self.phisical_damage
+				if key == 'by' and kwargs[key] == 'weapon':
+					if self.can_attack() == True and self.phisical_damage != 0:
+						self.damage += self.phisical_damage
 
-				else:
-					self.damage = 0
+					else:
+						self.damage = self.damage
 
-			elif key == 'by' and kwargs[key] == 'magic':
-				if self.can_attack() == True and self.magic_damage != 0:
-					self.damage = self.magic_damage
+				elif key == 'by' and kwargs[key] == 'magic':
+					if self.can_attack() == True and self.magic_damage != 0:
+						self.damage = self.magic_damage
 
-				else:
-					self.damage = 0
+					else:
+						self.damage = self.damage
 
 				return self.damage
 
