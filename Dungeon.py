@@ -153,27 +153,33 @@ class Dungeon:
         num = randint(0, len(treasures)-1)
         print(treasures[num])
 
+    def hero_attack(self, by):
+        if by == 'spell':
+            pass
+        elif by == 'weapon':
+            pass
+        else:
+            print('The hero can use only spell or weapon')
+
 
 
 map = Dungeon('dungeon.txt')
 map._pick_treasure()
 
-"""
-map._print_map()
-map._spawn('Batman')
-map._move_hero('right')
-map._print_map()
-map._move_hero('down')
-map._print_map()
-map._move_hero('down')
-map._print_map()
-map._move_hero('down')
-map._print_map()
-map._move_hero('right')
-map._print_map()
-map._move_hero('right')
-map._print_map()
-map._spawn('Batman')
-map._print_map()
 
-"""
+map._print_map()
+map._spawn('Batman')
+map._move_hero('right')
+map._print_map()
+map._move_hero('down')
+map._print_map()
+map._move_hero('down')
+map._print_map()
+map._move_hero('down')
+map._print_map()
+map._move_hero('right')
+map._print_map()
+map._move_hero('right')
+map._print_map()
+map._spawn('Batman')
+map._print_map()
