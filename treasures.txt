@@ -1,5 +1,5 @@
-gold
-silver
-health
-attack_points
+mana_potion
+health_potion
+empty_treasure
+
 
