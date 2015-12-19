@@ -28,7 +28,7 @@ class TestEnemy(unittest.TestCase):
 		self.assertEqual(self.enemy.curr_mana, 250)
 
 		s1 = Spell("MegaBatkaAttack", 30, 350, 2)
-		self.assertRaises(Exception)
+		self.assertFalse(self.enemy.can_cast(s1))
 
 	def test_enemy_take_damage(self):
 		self.enemy.take_damage(50)

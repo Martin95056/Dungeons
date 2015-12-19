@@ -22,31 +22,27 @@ class Unit(object):
 		return self.curr_health > 0
 
 	def can_cast(self, spell):
-		try:
-			self.curr_mana > spell.mana_cost
-						
+		if self.curr_mana > spell.mana_cost:
 			self.curr_mana -= spell.mana_cost
 			return True
 		
-		except:
-			raise Exception("NOT ENOUGH MANA!!!")
+		else:
+			print("Not enough mana.")
+			return False
 
 	def take_damage(self, damage_points):
 		if damage_points >= self.curr_health:
 			self.curr_health = 0
-
 		else:
 			self.curr_health -= damage_points
+
 		return self.curr_health
 
-	def take_healing(self, healing_points):
-		area = Dungeon('dungeon.txt')
-		my_map = area._read_dungeon()
+	def take_healing(self, health_points):
+		if self.is_alive():
+			if self.health - self.curr_health >= health_points:
+				self.curr_health += health_points
 
-		if self.is_alive() == True:
-			if my_map._pick_treasure() == 'health_potion':
-				if self.health - self.curr_health > 100:
-					self.curr_health += 100
 		return self.curr_health
 
 	def attack(self):
