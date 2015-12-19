@@ -1,4 +1,5 @@
 from unit import Unit
+from Dungeon import Dungeon
 
 
 class Hero(Unit):
@@ -34,23 +35,25 @@ class Hero(Unit):
 			print("{} cannot carry anymore weapons.".format(self.known_as()))
 			return False
 
-	def take_mana(self, mana_points):
-		if map.move_hero():
-			if (self.get_mana() + self.mana_regen) < self.mana:
-				self.get_mana() += self.mana_regen
+	def take_mana(self):
+		area = Dungeon('dungeon.txt')
+		my_map = area._read_dungeon()
 
-		else:
-			if (self.get_mana() + mana_points) < self.mana:
-				self.get_mana() += mana_points
+		if my_map._move_hero() and (self.mana - self.curr_mana) > self.mana_regen:
+			self.curr_mana += self.mana_regen
 
-		return self.get_mana()
+		elif my_map._pick_treasure() == 'mana_potion'
+			if self.mana - self.curr_mana > 50:
+				self.curr_mana += 50
+
+		return self.curr_mana
+
 
 	def learn(self, spell):
 		if self.can_learn_spell():
-
 			self.magic_damage = spell.damage
 			self.max_learned_spells = 1
-			return Tru
+			return True
 		else:
 			print("{} cannot learn anymore magics.".format(self.known_as()))
 			return False

@@ -1,5 +1,6 @@
 from weapon import Weapon
 from spell import Spell
+from Dungeon import Dungeon
 
 
 class Unit(object):
@@ -39,15 +40,14 @@ class Unit(object):
 		return self.curr_health
 
 	def take_healing(self, healing_points):
-		if self.is_alive() == True:
-			if (self.curr_health + healing_points) <= self.health:
-				self.curr_health += healing_points
-				return True
+		area = Dungeon('dungeon.txt')
+		my_map = area._read_dungeon()
 
-			else:
-				pass
-		else:
-			return False
+		if self.is_alive() == True:
+			if my_map._pick_treasure() == 'health_potion':
+				if self.health - self.curr_health > 100:
+					self.curr_health += 100
+		return self.curr_health
 
 	def attack(self):
 		return self.damage
