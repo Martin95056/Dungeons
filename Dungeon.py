@@ -2,14 +2,11 @@ from random import randint
 
 
 class Dungeon:
-
     def __init__(self, filename):
         self._filename = filename
         self._is_found = False
 
-
     def _read_dungeon(self):
-
         dungeon = [[]]
         with open(self._filename, 'r') as data:
             dungeon = [list(item) for line in data for item in line.split()]
@@ -64,8 +61,6 @@ class Dungeon:
         else:
             print('Nice')
             return True
-
-
 
     def _move_up(self):
         my_map = self._read_dungeon()
@@ -130,15 +125,21 @@ class Dungeon:
 
 
 
-    def _move_hero(self, direction):
-        if direction == 'up':
-            print(self._move_up())
-        if direction == 'down':
-            print(self._move_down())
-        if direction == 'right':
-            print(self._move_right())
-        if direction == 'left':
-            print(self._move_left())
+    def _move_hero(self, *args):
+        for direction in args:
+            if direction == 'up':
+                self._move_up()
+            elif direction == 'down':
+                self._move_down()
+            elif direction == 'right':
+                self._move_right()
+            elif direction == 'left':
+                self._move_left()
+                return True
+
+            else:
+                raise Exception("Valid directions are up, down, right and left.")
+                return False
 
     def _read_treasures(self):
         filename = 'treasures.txt'
@@ -146,40 +147,65 @@ class Dungeon:
             treasures = [item for line in data for item in line.split()]
         return treasures
 
-
-
     def _pick_treasure(self):
         treasures = self._read_treasures()
         num = randint(0, len(treasures)-1)
-        print(treasures[num])
 
-    def hero_attack(self, by):
-        if by == 'spell':
-            pass
-        elif by == 'weapon':
-            pass
-        else:
-            print('The hero can use only spell or weapon')
+        my_map = self._read_dungeon()
+        for row in range(0, len(my_map)):
+            for col in range(0, len(my_map[row])):
+                if my_map[row][col] == 'T':
+                    if treasures[num] == 'health_potion':
+                        print("You have found a health potion.")
+                    elif treasures[num] == 'mana_potion':
+                        print("You have found a mana potion.")
+                    elif treasures[num] == 'empty_treasure':
+                        print("The treasure is empty :(.")
+
+        return treasures[num]
+
+    def fight(self, hero, enemy):
+        filename = 'fight.txt'
+        data = open(filename, 'a')
+
+        hero = Hero("randomName", "randomTitle", 100, 100, 2)
+        enemy = Enemy(50, 50, 20)
+
+        my_map = self._read_dungeon()
+        for row in range(0, len(my_map)):
+            for col in range(0, len(my_map[row])):
+                if my_map[row][col] == 'H':
+                    if my_map[row - 1][col] == 'E' or my_map[row + 1][col] == 'E' or my_map[row][col - 1] == 'E' or my_map[row][col + 1] == 'E'
+                        if hero.magic_damage != 0:
+                            hero.attack(by='spell')
+                            enemy.take_damage(hero.magic_damage)
+                            data.write('There is an enemy near our hero. The hero attacked him with {} magic damage.'.format(hero.magic_damage))
+
+                            enemy.attack(enemy.damage)
+                            hero.take_damage(enemy.damage)
+                            data.write('The enemy atacked our hero with {} damage.'.format(enemy.damage))
+                            
+                            
+
+                        else:
+                            if my_map[row - 1][col] == 'E':
+                                my_map._move_right()
+                                hero.attack(by='weapon')
+                                enemy.take_damage(hero.damage)
+
+                            elif my_map[row + 1][col] == 'E':
+                                my_map._move_left()
+                                hero.attack(by='weapon')
+                                enemy.take_damage(hero.damage)
+
+                            elif my_map[row][col - 1] == 'E':
+                                my_map._move_up()
+                                hero.attack(by='weapon')
+                                enemy.take_damage(hero.damage)
+
+                            elif my_map[row][col + 1] == 'E':
+                                my_map._move_down()
+                                hero.attack(by='weapon')
+                                enemy.take_damage(hero.damage)
 
 
-
-map = Dungeon('dungeon.txt')
-map._pick_treasure()
-
-
-map._print_map()
-map._spawn('Batman')
-map._move_hero('right')
-map._print_map()
-map._move_hero('down')
-map._print_map()
-map._move_hero('down')
-map._print_map()
-map._move_hero('down')
-map._print_map()
-map._move_hero('right')
-map._print_map()
-map._move_hero('right')
-map._print_map()
-map._spawn('Batman')
-map._print_map()
