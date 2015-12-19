@@ -1,7 +1,5 @@
 from weapon import Weapon
 from spell import Spell
-from Dungeon import Dungeon
-
 
 class Unit(object):
 	def __init__(self, health, mana, damage):
