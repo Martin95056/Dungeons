@@ -16,7 +16,7 @@ class Dungeon:
         
         return dungeon
 
-    def _wtire_dungeon(self, dungeon):
+    def _write_dungeon(self, dungeon):
         data = open(self._filename, 'w')
         for item in dungeon:
             data.write(''.join(item)+"\n")
@@ -42,7 +42,7 @@ class Dungeon:
                 elif self._is_found == False and (dungeon[row][col] == 'S' or dungeon[row][col] == '.'):
                     dungeon[row][col] = 'H'
                     self._is_found = True
-        self._wtire_dungeon(dungeon)
+        self._write_dungeon(dungeon)
 
         return dungeon
 
@@ -77,7 +77,7 @@ class Dungeon:
                     elif self.check(my_map[row-1][col]):
                         my_map[row-1][col] = 'H'
                         my_map[row][col] = '.'
-                        self._wtire_dungeon(my_map)
+                        self._write_dungeon(my_map)
                         return True
                     else:
                         return False
@@ -92,7 +92,7 @@ class Dungeon:
                     elif self.check(my_map[row+1][col]):
                         my_map[row+1][col] = 'H'
                         my_map[row][col] = '.'
-                        self._wtire_dungeon(my_map)
+                        self._write_dungeon(my_map)
                         return True
                     else:
                         return False
@@ -107,7 +107,7 @@ class Dungeon:
                     elif self.check(my_map[row][col+1]):
                         my_map[row][col+1] = 'H'
                         my_map[row][col] = '.'
-                        self._wtire_dungeon(my_map)
+                        self._write_dungeon(my_map)
                         return True
                     else:
                         return False
@@ -123,7 +123,7 @@ class Dungeon:
                     elif self.check(my_map[row][col-1]):
                         my_map[row][col-1] = 'H'
                         my_map[row][col] = '.'
-                        self._wtire_dungeon(my_map)
+                        self._write_dungeon(my_map)
                         return True
                     else:
                         return False
