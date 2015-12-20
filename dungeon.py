@@ -48,51 +48,63 @@ class Dungeon:
 
     def _move_up(self):
         my_map = self._read_dungeon()
-        if self.hero_x == 0 or my_map[self.hero_x - 1][self.hero_y] == '#':
-            print("Your hero cannot move up.")
-            return False
+        for row in range(0, len(my_map)):
+            for col in range(0, len(my_map[row])):
+                if self.hero_x == 0 or my_map[self.hero_x - 1][self.hero_y] == '#':
+                    print("Your hero cannot move up.")
+                    return False
 
-        else:
-            my_map[self.hero_x][self.hero_y] = '.'
-            self.hero_x -= 1
-            self._write_dungeon(my_map)
-            return True
+                else:
+                    my_map[self.hero_x][self.hero_y] = '.'
+                    my_map[self.hero_x - 1][self.hero_y] = 'H'
+                    self.hero_x -= 1
+                    self._write_dungeon(my_map)
+                    return True
 
     def _move_down(self):
         my_map = self._read_dungeon()
-        if self.hero_x == len(my_map) or my_map[self.hero_x + 1][self.hero_y] == '#':
-            print("Your hero cannot move down.")
-            return False
+        for row in range(0, len(my_map)):
+            for col in range(0, len(my_map[row])):
+                if self.hero_x == len(my_map) or my_map[self.hero_x + 1][self.hero_y] == '#':
+                    print("Your hero cannot move down.")
+                    return False
 
-        else:
-            my_map[self.hero_x][self.hero_y] = '.'
-            self.hero_x += 1
-            self._write_dungeon(my_map)
-            return True
+                else:
+                    my_map[self.hero_x][self.hero_y] = '.'
+                    my_map[self.hero_x + 1][self.hero_y] = 'H'
+                    self.hero_x += 1
+                    self._write_dungeon(my_map)
+                    return True
 
     def _move_right(self):
         my_map = self._read_dungeon()
-        if self.hero_y == len(my_map[row]) or my_map[self.hero_x][self.hero_y + 1] == '#':
-            print("Your hero cannot move right.")
-            return False
+        for row in range(0, len(my_map)):
+            for col in range(0, len(my_map[row])):
+                if self.hero_y == len(my_map[row]) or my_map[self.hero_x][self.hero_y + 1] == '#':
+                    print("Your hero cannot move right.")
+                    return False
 
-        else:
-            my_map[self.hero_x][self.hero_y] = '.'
-            self.hero_y += 1
-            self._write_dungeon(my_map)
-            return True
+                else:
+                    my_map[self.hero_x][self.hero_y] = '.'
+                    my_map[self.hero_x][self.hero_y + 1] = 'H'
+                    self.hero_y += 1
+                    self._write_dungeon(my_map)
+                    return True
 
     def _move_left(self):
         my_map = self._read_dungeon()
-        if self.hero_y == 0 or my_map[self.hero_x][self.hero_y - 1] == '#':
-            print("Your hero cannot move left.")
-            return False
+        for row in range(0, len(my_map)):
+            for col in range(0, len(my_map[row])):
+                if self.hero_y == 0 or my_map[self.hero_x][self.hero_y - 1] == '#':
+                    print("Your hero cannot move left.")
+                    return False
 
-        else:
-            my_map[self.hero_x][self.hero_y] = '.'
-            self.hero_y -= 1
-            self._write_dungeon(my_map)
-            return True
+                else:
+                    my_map[self.hero_x][self.hero_y] = '.'
+                    my_map[self.hero_x][self.hero_y - 1] = 'H'
+                    self.hero_y -= 1
+                    self._write_dungeon(my_map)
+                    return True
 
     def _move_hero(self, *args):
         for direction in args:
@@ -135,19 +147,13 @@ class Dungeon:
 
     def can_fight(self):
         my_map = self._read_dungeon()
+        spell = Spell('spell', 20, 20, 1)
         if my_map[self.hero_x - spell.cast_range][self.hero_y] == 'E' or my_map[self.hero_x + spell.cast_range][self.hero_y] == 'E' or my_map[self.hero_x][self.hero_y - spell.cast_range] == 'E' or my_map[self.hero_x][self.hero_y + spell.cast_range] == 'E':
             return True
 
     def fight(self, hero, enemy):
         filename = 'fight.txt'
         data = open(filename, 'a')
-
-        hero = Hero("randomName", "randomTitle", 100, 100, 2)
-        enemy = Enemy(50, 50, 20)
-        spell = Spell('spell', 20, 20)
-        weapon = Weapon('axe', 30)
-        hero.learn(spell)
-        hero.equip(weapon)
 
         if self.can_fight():
 
@@ -159,7 +165,7 @@ class Dungeon:
                     enemy.take_damage(hero.damage)
                     data.write('Hero attacked enemy with {} magic damage.'.format(hero.damage))
 
-                    enemy.attack(enemy.damage)
+                    enemy.attack()
                     hero.take_damage(enemy.damage)
                     data.write('The enemy atacked our hero with {} damage.'.format(enemy.damage))
                     
@@ -167,15 +173,16 @@ class Dungeon:
                 enemy.take_damage(hero.damage)
                 data.write('Hero attacked enemy with {} phisical damage.'.format(hero.damage))
 
-                enemy.attack(enemy.damage)
+                enemy.attack()
                 hero.take_damage(enemy.damage)
                 data.write('The enemy atacked our hero with {} damage.'.format(enemy.damage))
 
-                if hero.is_alive() == False:
-                    print('{} is dead.\n -----GAME OVER-----'.format(hero.known_as()))
 
-                elif enemy.is_alive() == False:
-                    print('Enemy is dead. Continue your adventure.')
+            if hero.is_alive() == False:
+                data.write('Hero is dead.\n -----GAME OVER-----')
+
+            elif enemy.is_alive() == False:
+                data.write('Enemy is dead. Continue your adventure.')
 
         else:
             print("Hero is too far from the enemy.")
